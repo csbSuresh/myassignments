@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SchedulingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Entity_Id" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="C_Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="C_Number" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="C_Type" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Market" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="CreatedDttm" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDttm" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="CompanyNotifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Notification_Date" Type="date" Nullable="false" />
+          <Property Name="Company_Id" Type="int" Nullable="false" />
+          <Property Name="CreatedDttm" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDttm" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="CompanyScheduleDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Market" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="Type" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="Frequency" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ModifiedDttm" Type="datetime" Nullable="false" />
+          <Property Name="CreatedDttm" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CompanyNotifications_Company">
+          <End Role="CompanyInfo" Type="Self.CompanyInfo" Multiplicity="1" />
+          <End Role="CompanyNotifications" Type="Self.CompanyNotifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyNotifications">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchedulingSystemModelStoreContainer">
+          <EntitySet Name="CompanyInfo" EntityType="Self.CompanyInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyNotifications" EntityType="Self.CompanyNotifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyScheduleDetails" EntityType="Self.CompanyScheduleDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CompanyNotifications_Company" Association="Self.FK_CompanyNotifications_Company">
+            <End Role="CompanyInfo" EntitySet="CompanyInfo" />
+            <End Role="CompanyNotifications" EntitySet="CompanyNotifications" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchedulingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CompanyInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Entity_Id" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="C_Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="C_Number" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="C_Type" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Market" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDttm" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDttm" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="CompanyNotifications" Relationship="SchedulingSystemModel.FK_CompanyNotifications_Company" FromRole="CompanyInfo" ToRole="CompanyNotification" />
+        </EntityType>
+        <EntityContainer Name="SchedulingSystemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CompanyInfoes" EntityType="Self.CompanyInfo" />
+          <EntitySet Name="CompanyScheduleDetails" EntityType="SchedulingSystemModel.CompanyScheduleDetail" />
+          <EntitySet Name="CompanyNotifications" EntityType="SchedulingSystemModel.CompanyNotification" />
+          <AssociationSet Name="FK_CompanyNotifications_Company" Association="SchedulingSystemModel.FK_CompanyNotifications_Company">
+            <End Role="CompanyInfo" EntitySet="CompanyInfoes" />
+            <End Role="CompanyNotification" EntitySet="CompanyNotifications" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CompanyScheduleDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Market" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="CreatedDttm" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDttm" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Frequency" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CompanyNotification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Notification_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Company_Id" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDttm" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="ModifiedDttm" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="CompanyInfo" Relationship="SchedulingSystemModel.FK_CompanyNotifications_Company" FromRole="CompanyNotification" ToRole="CompanyInfo" />
+        </EntityType>
+        <Association Name="FK_CompanyNotifications_Company">
+          <End Type="SchedulingSystemModel.CompanyInfo" Role="CompanyInfo" Multiplicity="1" />
+          <End Type="SchedulingSystemModel.CompanyNotification" Role="CompanyNotification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CompanyNotification">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchedulingSystemModelStoreContainer" CdmEntityContainer="SchedulingSystemEntities">
+          <EntitySetMapping Name="CompanyInfoes">
+            <EntityTypeMapping TypeName="SchedulingSystemModel.CompanyInfo">
+              <MappingFragment StoreEntitySet="CompanyInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Entity_Id" ColumnName="Entity_Id" />
+                <ScalarProperty Name="C_Name" ColumnName="C_Name" />
+                <ScalarProperty Name="C_Number" ColumnName="C_Number" />
+                <ScalarProperty Name="C_Type" ColumnName="C_Type" />
+                <ScalarProperty Name="Market" ColumnName="Market" />
+                <ScalarProperty Name="CreatedDttm" ColumnName="CreatedDttm" />
+                <ScalarProperty Name="ModifiedDttm" ColumnName="ModifiedDttm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyScheduleDetails">
+            <EntityTypeMapping TypeName="SchedulingSystemModel.CompanyScheduleDetail">
+              <MappingFragment StoreEntitySet="CompanyScheduleDetails">
+                <ScalarProperty Name="Frequency" ColumnName="Frequency" />
+                <ScalarProperty Name="ModifiedDttm" ColumnName="ModifiedDttm" />
+                <ScalarProperty Name="CreatedDttm" ColumnName="CreatedDttm" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Market" ColumnName="Market" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyNotifications">
+            <EntityTypeMapping TypeName="SchedulingSystemModel.CompanyNotification">
+              <MappingFragment StoreEntitySet="CompanyNotifications">
+                <ScalarProperty Name="ModifiedDttm" ColumnName="ModifiedDttm" />
+                <ScalarProperty Name="CreatedDttm" ColumnName="CreatedDttm" />
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Notification_Date" ColumnName="Notification_Date" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
